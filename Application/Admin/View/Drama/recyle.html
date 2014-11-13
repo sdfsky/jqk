@@ -1,0 +1,56 @@
+<extend name="Public/base" />
+
+<block name="body">
+    <!-- 标题栏 -->
+    <div class="main-title">
+        <h2>影视回收站</h2>
+    </div>
+    <div class="cf">
+        <div class="fl">
+            <button url="{:U('Drama/clear')}" class="btn ajax-post" target-form="ids">清 空</button>
+            <button url="{:U('drama/permit')}" class="btn ajax-post" target-form="ids">还 原</button>
+        </div>
+    </div>
+    <!-- 数据列表 -->
+    <div class="data-table table-striped">
+        <table class="">
+            <thead>
+                <tr>
+                    <th class="row-selected row-selected"><input class="check-all" type="checkbox"/></th>
+                    <th class="">名称</th>
+                    <th class="">集数</th>
+                    <th class="">年代</th>
+                    <th class="">地区</th>
+                    <th class="">创建时间</th>
+                    <th class="">更新时间</th>
+                    <th class="">浏览数</th>
+                    <th class="">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+            <notempty name="_list">
+                <volist name="_list" id="vo">
+                    <tr>
+                        <td><input class="ids" type="checkbox" name="id[]" value="{$vo.id}" /></td>
+                        <td>{$vo.name} </td>
+                        <td>{$vo.plots} </td>
+                        <td>{$vo.age} </td>
+                        <td>{$vo.region} </td>
+                        <td>{$vo.create_time|time_format}</td>
+                        <td>{$vo.update_time|time_format}</td>
+                        <td>{$vo.views}</td>
+                        <td>
+                            <a href="{:U('permit?&ids='.$vo['id'])}" class="ajax-get">还原</a>
+                        </td>
+                    </tr>
+                </volist>
+                <else/>
+                <td colspan="9" class="text-center"> aOh! 暂时还没有内容! </td>
+            </notempty>
+            </tbody>
+        </table>
+    </div>
+    <div class="page">
+        {$_page}
+    </div>
+</block>

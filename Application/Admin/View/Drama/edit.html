@@ -1,0 +1,178 @@
+<extend name="Public/base"/>
+
+<block name="body">
+    <script type="text/javascript" src="__STATIC__/uploadify/jquery.uploadify.min.js"></script>
+    <div class="main-title">
+        <h2>新增影视</h2>
+    </div>
+    <form id="form" action="{:U()}" method="post" class="form-horizontal">
+        <input type="hidden" name="id" value="{$info.id}" />
+        <div id="tab1" class="tab-pane in tab1">
+            <div class="form-item cf">
+                <label class="item-label">影视名称<span class="check-tips"></span></label>
+                <div class="controls">
+                    <input type="text" class="text input-large" name="name" value="{$info.name}" />                    
+                </div>
+            </div>
+            <div class="form-item cf">
+                <label class="item-label">影视类型<span class="check-tips">（1电视剧，2电影，3动漫）</span></label>
+                <div class="controls">
+                    <label class="radio"><input type="radio" value="1" name="type" <eq name='info.type' value='1'>checked</eq>>电视剧</label>
+                    <label class="radio"><input type="radio" value="2" name="type" <eq name='info.type' value='2'>checked</eq>>电影</label>
+                    <label class="radio"><input type="radio" value="3" name="type" <eq name='info.type' value='3'>checked</eq>>动漫</label>
+                </div>
+            </div>
+            <div class="form-item cf">
+                <label class="item-label">年代<span class="check-tips">（影视剧的发布年代）</span></label>
+                <div class="controls">
+                    <input type="text" class="text input-large" name="age" value="{$info.age}" />                    
+                </div>
+            </div>
+            <div class="form-item cf">
+                <label class="item-label">地区<span class="check-tips">（影视地区）</span></label>
+                <div class="controls"><input type="text" class="text input-large" name="region" value="{$info.region}"></div>
+            </div>
+            <div class="form-item cf">
+                <label class="item-label">别名<span class="check-tips"></span></label>
+                <div class="controls"><input type="text" class="text input-large" name="alias" value="{$info.alias}" /></div>
+            </div><div class="form-item cf">
+                <label class="item-label">封面<span class="check-tips">（封面）</span></label>
+                <div class="controls">
+                    <div class="controls">
+                        <input type="file" id="upload_picture_logo">
+                        <input type="hidden" name="logo" id="cover_id_logo" value="{$info.logo}"/>
+                        <div class="upload-img-box">
+                            <notempty name="info.logo">
+                                <div class="upload-pre-item"><img src="{$info.logo|get_cover='path'}"/></div>
+                            </notempty>
+                        </div>
+                    </div>
+                    <script type="text/javascript">
+                        //上传图片
+                        /* 初始化上传插件 */
+                        $("#upload_picture_logo").uploadify({
+                            "height": 30,
+                            "swf": "__STATIC__/uploadify/uploadify.swf",
+                            "fileObjName": "download",
+                            "buttonText": "上传图片",
+                            "uploader": "{:U('File/uploadPicture',array('session_id'=>session_id()))}",
+                            "width": 120,
+                            'removeTimeout': 1,
+                            'fileTypeExts': '*.jpg; *.png; *.gif;',
+                            "onUploadSuccess": uploadPicturelogo,
+                            'onFallback': function() {
+                                alert('未检测到兼容版本的Flash.');
+                            }
+                        });
+                        function uploadPicturelogo(file, data) {
+                            var data = $.parseJSON(data);
+                            var src = '';
+                            if (data.status) {
+                                $("#cover_id_logo").val(data.id);
+                                src = data.url || '__ROOT__' + data.path;
+                                $("#cover_id_logo").parent().find('.upload-img-box').html(
+                                        '<div class="upload-pre-item"><img src="' + src + '"/></div>'
+                                        );
+                            } else {
+                                updateAlert(data.info);
+                                setTimeout(function() {
+                                    $('#top-alert').find('button').click();
+                                    $(that).removeClass('disabled').prop('disabled', false);
+                                }, 1500);
+                            }
+                        }
+                    </script>              
+                </div>
+            </div>
+            <div class="form-item cf">
+                <label class="item-label">主演<span class="check-tips">（主要演员，空格隔开）</span></label>
+                <div class="controls">
+                    <input type="text" class="text input-large" name="performers"  value="{$info.performers}" />
+                </div>
+            </div>
+            <div class="form-item cf">
+                <label class="item-label">简介<span class="check-tips">（概述介绍）</span></label>
+                <div class="controls">
+                    <label class="textarea input-large">
+                        <textarea name="summary">{$info.summary}</textarea>
+                    </label>                   
+                </div>
+            </div>
+            <div class="form-item cf">
+                <label class="item-label">开放分类<span class="check-tips">（开放分类，空格隔开）</span></label>
+                <div class="controls">
+                    <input type="text" class="text input-large" name="categorys" value="{$info.categorys}" />
+                </div>
+            </div>
+            <div class="form-item cf">
+                <label class="item-label">电视集数<span class="check-tips">（电视，电影集数）</span></label>
+                <div class="controls">
+                    <input type="text" class="text input-mid" name="plots" value="{$info.plots}">                    
+                </div>
+            </div>
+            <div class="form-item cf">
+                <label class="item-label">最近更新到第几集<span class="check-tips"></span></label>
+                <div class="controls">
+                    <input type="text" class="text input-mid" name="latest_plot_index" value="{$info.latest_plot_index}">                   
+                </div>
+            </div>
+            <div class="form-item cf">
+                <label class="item-label">最新一集的内容<span class="check-tips"></span></label>
+                <div class="controls">
+                    <label class="textarea input-large">
+                        <textarea name="latest_plot_content">{$info.latest_plot_content}</textarea>
+                    </label>                    
+                </div>
+            </div>
+            <div class="form-item cf">
+                <label class="item-label">创建时间<span class="check-tips"></span></label>
+                <div class="controls">
+                    <input type="text" name="create_time" class="text input-mid time" value="{$info.create_time|date='Y-m-d H:i',###}" placeholder="请选择时间"></div>
+            </div>
+            <div class="form-item cf">
+                <label class="item-label">更新时间<span class="check-tips"></span></label>
+                <div class="controls">
+                    <input type="text" name="update_time" class="text input-mid time" value="{$info.update_time|date='Y-m-d H:i',###}" placeholder="请选择时间"></div>
+            </div>
+
+            <div class="form-item cf">
+                <label class="item-label">状态<span class="check-tips">（1已审核,0未审核）</span></label>
+                <div class="controls">
+                    <select name="status"><option value="1" <eq name='info.status' value='1'>selected</eq>>已审核</option><option value="0" <eq name='info.status' value='0'>selected</eq>>未审核</option></select>
+                </div>
+            </div>        
+        </div>
+        <div class="form-item cf">
+            <button class="btn submit-btn ajax-post hidden" id="submit" type="submit" target-form="form-horizontal">确 定</button>
+            <a class="btn btn-return" href="javascript:;">返 回</a>
+        </div>
+    </form>
+</block>
+
+<block name="script">
+    <link href="__STATIC__/datetimepicker/css/datetimepicker.css" rel="stylesheet" type="text/css">
+    <php>if(C('COLOR_STYLE')=='blue_color') echo '<link href="__STATIC__/datetimepicker/css/datetimepicker_blue.css" rel="stylesheet" type="text/css">';</php>
+    <link href="__STATIC__/datetimepicker/css/dropdown.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="__STATIC__/datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+    <script type="text/javascript" src="__STATIC__/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
+    <script type="text/javascript">
+                        $(function() {
+                            highlight_subnav('{:U('Drama / index')}');
+                            $('#submit').click(function() {
+                                $('#form').submit();
+                            });
+                            $('.date').datetimepicker({
+                                format: 'yyyy-mm-dd',
+                                language: "zh-CN",
+                                minView: 2,
+                                autoclose: true
+                            });
+                            $('.time').datetimepicker({
+                                format: 'yyyy-mm-dd hh:ii',
+                                language: "zh-CN",
+                                minView: 2,
+                                autoclose: true
+                            });
+                        });
+    </script>
+</block>

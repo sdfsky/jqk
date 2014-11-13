@@ -1,0 +1,18 @@
+
+<!-- 底部
+================================================== -->
+<footer class="footer">
+    <div id="footer">
+        <div style="padding: 15px;text-align: center;" class="container">
+            <p>关于我们 | 联系我们 | 意见反馈 | 服务条款 | <a target="_blank" href="http://www.miitbeian.gov.cn">京ICP备13022057号-4</a></p>
+        </div>
+    </div>
+</footer>
+
+<include file="Public/var"/>
+<block name="script"></block> <!-- 用于加载js代码 -->
+<!-- 页面footer钩子，一般用于加载插件JS文件和JS代码 -->
+{:hook('pageFooter', 'widget')}
+<div class="hidden"><!-- 用于加载统计代码等隐藏元素 -->
+    <block name="hidden"></block>
+</div>

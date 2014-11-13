@@ -1,0 +1,43 @@
+<php>
+    $toplist= M('Drama')->where(true)->order('views DESC,update_time DESC')->limit(0,8)->select();
+</php>
+<div class="modbox">
+    <div class="panel panel-default">
+        <div class="panel-heading"><i class="fa fa-bar-chart-o"></i> 排行榜</div>
+        <div class="panel-body">
+            <ul class="right-list">
+                <volist name='toplist' key='tindex' id='top'>
+                    <li>
+                        <em <gt name='tindex' value='3'>class="n2"<else/>class="n1"</gt>>{$tindex}</em>
+                        <a href="{:U('Drama/detail?&dramaid='.$top['id'])}" target="_blank">{$top.name}</a>
+                        <span>更新至{$top.latest_plot_index}集</span>
+                    </li>      
+                </volist>
+
+            </ul>
+        </div>
+    </div>
+    <div class="panel panel-default" style="margin-top: 15px;">
+        <div class="panel-heading"><i class="fa fa-comments-o"></i></i> 最新评论</div>
+        <div class="panel-body">
+            <!-- 多说最新评论 start -->
+            <div class="ds-recent-comments" data-num-items="5" data-show-avatars="1" data-show-time="1" data-show-title="1" data-show-admin="1" data-excerpt-length="70"></div>
+            <!-- 多说最新评论 end -->
+            <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+            <script type="text/javascript">
+                var duoshuoQuery = {short_name: "juqingku"};
+                (function() {
+                    var ds = document.createElement('script');
+                    ds.type = 'text/javascript';
+                    ds.async = true;
+                    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+                    ds.charset = 'UTF-8';
+                    (document.getElementsByTagName('head')[0]
+                            || document.getElementsByTagName('body')[0]).appendChild(ds);
+                })();
+            </script>
+            <!-- 多说公共JS代码 end -->
+
+        </div>
+    </div>
+</div>

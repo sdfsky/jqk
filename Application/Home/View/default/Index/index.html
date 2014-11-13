@@ -1,0 +1,106 @@
+<extend name="Base/common"/>
+
+<block name="seo">
+    <eq name="sorttype" value="0">
+    <title>{:C('WEB_SITE_TITLE')} - 最新最全影视剧情介绍</title>
+    <meta name="keywords" content="{:C('WEB_SITE_KEYWORD')}" />
+    <meta name="description" content="{:C('WEB_SITE_DESCRIPTION')}" />
+    <else />
+    <title>热门排行 - {:C('WEB_SITE_TITLE')}</title>
+    <meta name="keywords" content="{:C('WEB_SITE_KEYWORD')}" />
+    <meta name="description" content="{:C('WEB_SITE_DESCRIPTION')}" />
+    </eq>
+</block>
+
+<block name="body">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+                    <!-- Indicators -->
+                    <ol class="carousel-indicators">
+                        <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+                        <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+                        <li data-target="#carousel-example-generic" data-slide-to="2"></li>
+                    </ol>
+                    <!-- Wrapper for slides -->
+                    <div class="carousel-inner" role="leftmodbox">
+                        <volist name='sliders' key="index" id='slider'>
+                            <div class="item <eq name='index' value='1'>active</eq>">
+                                <a href="{$slider.url}" target="_blank"><img src="{$slider.image|get_cover='path'}" alt="{$slider.title}"></a>
+                                <div class="carousel-caption">
+                                    <h3>{$slider.title}</h3>
+                                    <p>{$slider.description}</p>
+                                </div>
+                            </div>
+                        </volist>
+                    </div>
+                    <!-- Controls -->
+                    <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
+                        <span class="glyphicon glyphicon-chevron-left"></span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                    <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
+                        <span class="glyphicon glyphicon-chevron-right"></span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="row mt20">
+            <div class="col-md-9">
+                <ul class="nav nav-tabs" role="tableftmod">
+                    <eq name="sorttype" value="1">
+                    <li role="presentation" ><a href="__ROOT__">最近更新</a></li>
+                    <li role="presentation" class="active"><a href="{:U('Index/index?&sorttype=1')}">热门排行</a></li>
+                    <else />
+                    <li role="presentation" class="active"><a href="__ROOT__">最近更新</a></li>
+                    <li role="presentation"><a href="{:U('Index/index?&sorttype=1')}">热门排行</a></li>
+                    </eq>
+                </ul>
+                <div class="leftmod">
+                    <volist name="dramalist" id="drama">
+                        <div class="media clearfix">
+                            <div class="pull-left hidden-xs">
+                                <a href="{:U('Drama/detail?&dramaid='.$drama['id'])}" target="_blank">
+                                    <img src="{$drama.logo|get_cover='path'}"/>
+                                </a>
+                                <div class="info">
+                                    <p class="image-text">更新至{$drama.latest_plot_index}集 共{$drama.plots}集</p>
+                                </div>
+                            </div>
+                            <div class="media-body">
+                                <h4 class="media-heading"><a href="{:U('Drama/search?type='.$drama['type'])}" class="typename">[{$drama.type|get_drama_typename}]</a> <a href="{:U('Drama/detail?&dramaid='.$drama['id'])}" target="_blank">{$drama.name}</a><notempty name="drama.alias"><span>（别名：{$drama.alias}）</span></notempty></h4>
+                                <div class="extinfo">
+                                    <span>
+                                        <php>$performers = explode(" ",$drama['performers']);</php>
+                                        主演：
+                                        <volist name="performers" id="performer">
+                                            <a href="{:U('Drama/performer?performer_name='.$performer)}" target="_blank">{$performer}</a>&nbsp;
+                                        </volist>
+                                    </span>
+                                    <span>地区：<a href="{:U('Drama/search?location='.$drama['region'])}" target="_blank">{$drama.region}</a></span>
+                                    <span>年代：<a href="{:U('Drama/search?year='.$drama['age'])}" target="_blank">{$drama.age}</a></span>
+                                </div>
+                                <p>{$drama.latest_plot_content|msubstr=0,140}</p>
+                                <div class="more">
+                                    <a href="{:U('Drama/detail?&dramaid='.$drama['id'])}" target="_blank" class="pull-right">查看全文</a>
+                                    <span class="time"><span class="glyphicon glyphicon-time"></span> 更新于 {$drama.update_time|friendlyDate}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </volist>
+                    <div class="text-center">
+                        {$_page}
+
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-md-3">
+                <include file="Public/right" />
+            </div>
+
+        </div>
+    </div>
+</block>

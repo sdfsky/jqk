@@ -1,0 +1,111 @@
+<extend name="Base/common"/>
+<block name="seo">
+    <eq name="type" value="0">
+    <title>影视搜索 - {:C('WEB_SITE_TITLE')}</title>
+    <meta name="keywords" content="{:C('WEB_SITE_KEYWORD')}" />
+    <meta name="description" content="{:C('WEB_SITE_DESCRIPTION')}" />
+    </eq>
+    <eq name="type" value="1">
+    <title>电视剧剧情 - {:C('WEB_SITE_TITLE')}</title>
+    <meta name="keywords" content="电视剧剧情,电视剧剧情介绍,电视剧分集剧情" />
+    <meta name="description" content="{:C('WEB_SITE_DESCRIPTION')}" />
+    </eq>
+    <eq name="type" value="2">
+    <title>电影剧情 - {:C('WEB_SITE_TITLE')}</title>
+    <meta name="keywords" content="电影剧情,电影剧情介绍" />
+    <meta name="description" content="{:C('WEB_SITE_DESCRIPTION')}" />
+    </eq>
+    <eq name="type" value="3">
+    <title>动漫剧情 - {:C('WEB_SITE_TITLE')}</title>
+    <meta name="keywords" content="动漫剧情,动漫剧情介绍" />
+    <meta name="description" content="{:C('WEB_SITE_DESCRIPTION')}" />
+    </eq>
+</block>
+<block name="body">
+    <div class="container">
+        <div class="row mt20">
+            <div class="col-md-9">
+                <div class="panel panel-default searchmod">
+                    <div class="panel-heading"><i class="fa fa-filter"></i> 条件筛选</div>
+                    <div class="panel-body">
+                        <div class="filter_group clearfix">
+                            <div class="col-md-1 filter_name"><i class="fa fa-film"></i> 影视</div>
+                            <div class="col-md-11 filter_items">
+                                <a  href="{:U('Drama/search?word='.$word.'&type=0&category='.$category.'&location='.$location.'&year='.$year)}" <eq name='type' value='0'>class="btn btn-success btn-xs"</eq> role="button">全部</a>
+                                <a  href="{:U('Drama/search?word='.$word.'&type=1&category='.$category.'&location='.$location.'&year='.$year)}" <eq name='type' value='1'>class="btn btn-success btn-xs"</eq> role="button">电视剧</a>
+                                <a  href="{:U('Drama/search?word='.$word.'&type=2&category='.$category.'&location='.$location.'&year='.$year)}" <eq name='type' value='2'>class="btn btn-success btn-xs"</eq> role="button">电影</a>
+                                <a  href="{:U('Drama/search?word='.$word.'&type=3&category='.$category.'&location='.$location.'&year='.$year)}" <eq name='type' value='3'>class="btn btn-success btn-xs"</eq> role="button">动漫</a>
+                            </div>
+                        </div>
+                        <div class="filter_group clearfix">
+                            <div class="col-md-1 filter_name"><i class="fa fa-tags"></i> 类型</div>
+                            <div class="col-md-11 filter_items">
+                                <a  href="{:U('Drama/search?word='.$word.'&type='.$type.'&category=0&location='.$location.'&year='.$year)}" <eq name='category' value='0'>class="btn btn-success btn-xs"</eq> role="button" >全部</a>
+                                <volist name="categorys" id="cate">
+                                    <a  href="{:U('Drama/search?word='.$word.'&type='.$type.'&category='.$cate['category_name'].'&location='.$location.'&year='.$year)}" <eq name='cate.category_name' value='$category'>class="btn btn-success btn-xs"</eq> role="button">{$cate.category_name}</a>
+                                </volist>
+                            </div>
+                            <div class="filter_group clearfix">
+                                <div class="col-md-1 filter_name"><i class="fa fa-map-marker"></i> 地区</div>
+                                <div class="col-md-11 filter_items">
+                                    <a  href="{:U('Drama/search?word='.$word.'&type='.$type.'&category='.$category.'&location=0&year='.$year)}" <eq name='location' value='0'>class="btn btn-success btn-xs"</eq> role="button" >全部</a>
+                                    <volist name="locations" id="region">
+                                        <a  href="{:U('Drama/search?word='.$word.'&type='.$type.'&category='.$category.'&location='.$region['region'].'&year='.$year)}" <eq name='location' value='$region.region'>class="btn btn-success btn-xs"</eq> role="button" >{$region.region}</a>
+                                    </volist>
+                                </div>
+                            </div>
+                            <div class="filter_group clearfix">
+                                <div class="col-md-1 filter_name"><i class="fa fa-calendar"></i> 年代</div>
+                                <div class="col-md-11 filter_items">
+                                    <a  href="{:U('Drama/search?word='.$word.'&type='.$type.'&category='.$category.'&location='.$location.'&year=0')}" <eq name='year' value='0'>class="btn btn-success btn-xs"</eq> role="button" >全部</a>
+                                    <volist name="years" id="age">
+                                        <a  href="{:U('Drama/search?word='.$word.'&type='.$type.'&category='.$category.'&location='.$location.'&year='.$age['age'])}" <eq name='year' value='$age.age'>class="btn btn-success btn-xs"</eq> role="button" >{$age.age}</a>
+                                    </volist>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="leftmod">
+                    <volist name="dramalist" id="drama">
+                        <div class="media clearfix">
+                            <div class="pull-left hidden-xs">
+                                <a href="#">
+                                    <img src="{$drama.logo|get_cover='path'}"/>
+                                </a>
+                                <div class="info">
+                                    <p class="image-text">更新至{$drama.latest_plot_index}集 共{$drama.plots}集</p>
+                                </div>
+                            </div>
+                            <div class="media-body">
+                                <h4 class="media-heading"><a href="{:U('Drama/search?type='.$drama['type'])}" class="typename">[{$drama.type|get_drama_typename}]</a> <a href="{:U('Drama/detail?&dramaid='.$drama['id'])}" target="_blank">{$drama.name}</a><notempty name="drama.alias"><span>（别名：{$drama.alias}）</span></notempty></h4>
+                                <div class="extinfo">
+                                    <span>
+                                        <php>$performers = explode(" ",$drama['performers']);</php>
+                                        主演：
+                                        <volist name="performers" id="performer">
+                                            <a href="{:U('Drama/performer?performer_name='.$performer)}" target="_blank">{$performer}</a>&nbsp;
+                                        </volist>
+                                    </span>
+                                    <span>地区：<a href="{:U('Drama/search?location='.$drama['region'])}" target="_blank">{$drama.region}</a></span>
+                                    <span>年代：<a href="{:U('Drama/search?year='.$drama['age'])}" target="_blank">{$drama.age}</a></span>
+                                </div>
+                                <p>{$drama.latest_plot_content|msubstr=0,140}</p>
+                                <div class="more">
+                                    <a href="{:U('Drama/detail?&dramaid='.$drama['id'])}" target="_blank" class="pull-right">查看全文</a>
+                                    <span class="time"><span class="glyphicon glyphicon-time"></span> 更新于 {$drama.update_time|friendlyDate}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </volist>
+                    <div class="text-center">{$_page}</div>
+                </div>
+
+            </div>
+            <div class="col-md-3">
+                <include file="Public/right" />
+            </div>
+        </div>
+    </div>
+</block>

@@ -1,0 +1,59 @@
+<extend name="Public/base"/>
+
+<block name="body">
+    <div class="main-title">
+        <h2><a href="{:U('Plot/index?&dramaid='.$drama['id'])}">{$drama.name}</a> - 新增剧情</h2>
+    </div>
+    <form id="form" action="{:U()}" method="post" class="form-horizontal">
+        <!-- 基础文档模型 -->
+        <div id="tab1" class="tab-pane in tab1">
+            <div class="form-item cf">
+                <label class="item-label">剧名<span class="check-tips"></span></label>
+                <div class="controls">
+                    <input type="text" class="text input-large" name="drama_name" value="{$drama.name}" readonly/>      
+                    <input type="hidden" name="dramaid" value="{$drama.id}" />
+                </div>
+            </div>
+            <div class="form-item cf">
+                <label class="item-label">当前集数<span class="check-tips"></span></label>
+                <div class="controls">
+                    <input type="text" class="text input-large" name="plotindex" value="" />                    
+                </div>
+            </div>
+            <div class="form-item cf">
+                <label class="item-label">内容<span class="check-tips">（剧情内容）</span></label>
+                <div class="controls">
+                    <label class="textarea">
+                        <textarea name="content" style="height: 250px;"></textarea>
+                    </label>                   
+                </div>
+            </div>  
+        </div>
+        <div class="form-item cf">
+            <button class="btn submit-btn ajax-post hidden" id="submit" type="submit" target-form="form-horizontal">确 定</button>
+            <a class="btn btn-return" href="javascript:;">返 回</a>
+        </div>
+    </form>
+</block>
+
+<block name="script">
+    <link href="__STATIC__/datetimepicker/css/datetimepicker.css" rel="stylesheet" type="text/css">
+    <php>if(C('COLOR_STYLE')=='blue_color') echo '<link href="__STATIC__/datetimepicker/css/datetimepicker_blue.css" rel="stylesheet" type="text/css">';</php>
+    <link href="__STATIC__/datetimepicker/css/dropdown.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="__STATIC__/datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+    <script type="text/javascript" src="__STATIC__/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
+    <script type="text/javascript">
+        $(function() {
+            highlight_subnav('{:U('Plot / index')}');
+            $('#submit').click(function() {
+                $('#form').submit();
+            });
+            $('.time').datetimepicker({
+                format: 'yyyy-mm-dd hh:ii',
+                language: "zh-CN",
+                minView: 2,
+                autoclose: true
+            });
+        });
+    </script>
+</block>
