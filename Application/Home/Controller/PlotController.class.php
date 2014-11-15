@@ -13,6 +13,7 @@ namespace Home\Controller;
 class PlotController extends HomeController {
 
     public function detail($dramaid,$plotindex = 1) {
+        echo $plotindex;
         if (!($plotindex && is_numeric($plotindex))) {
             $this->error('ID错误！');
         }
@@ -32,6 +33,8 @@ class PlotController extends HomeController {
         $this->assign("plot", $plot);
         $this->assign("drama", $drama);
         $this->assign("guesslikes", $guesslikes);
+        $this->assign("plotindex", $plotindex);
+
         $this->display();
     }
 

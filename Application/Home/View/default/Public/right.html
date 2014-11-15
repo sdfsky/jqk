@@ -9,7 +9,7 @@
                 <volist name='toplist' key='tindex' id='top'>
                     <li>
                         <em <gt name='tindex' value='3'>class="n2"<else/>class="n1"</gt>>{$tindex}</em>
-                        <a href="{:U('Drama/detail?&dramaid='.$top['id'])}" target="_blank">{$top.name}</a>
+                        <a href="{:U('/subject/'.$top['id'])}" target="_blank">{$top.name}</a>
                         <span>更新至{$top.latest_plot_index}集</span>
                     </li>      
                 </volist>

@@ -1,4 +1,11 @@
 <extend name="Base/common"/>
+
+<block name="seo">
+    <title>{$drama.name}剧情介绍 - {:C('WEB_SITE_TITLE')}</title>
+    <meta name="keywords" content="{$drama.name},{$drama.name}剧情介绍,{$drama.name}分集剧情介绍" />
+    <meta name="description" content="{$drama.summary|msubstr=0,180}" />
+</block>
+
 <block name="body">
     <div class="container">
         <div class="row">
@@ -7,7 +14,9 @@
                 <div class="modbox2 mt20">
                     <ul role="tableftmod" class="nav nav-tabs">
                         <li class="active" role="presentation"><a href=""><i class="fa fa-caret-square-o-right"></i> 影片介绍</a></li>
-                        <li role="presentation"><a href="{:U('Plot/detail?dramaid='.$drama['id'])}"><i class="fa fa-list"></i> 分集剧情</a></li>
+                        <neq name="drama.type" value="2">
+                            <li role="presentation"><a href="{:U('/plot/'.$drama['id'].'/1')}"><i class="fa fa-list"></i> 分集剧情</a></li>
+                        </neq>
                     </ul>
                     <div class="panel panel-default">
                         <div class="panel-heading">
@@ -15,8 +24,8 @@
                                 <div class="pull-left hidden-xs">
                                     <img src="{$drama.logo|get_cover='path'}"/>
                                     <div class="info">
-                                        <p>地区：<a href="{:U('Drama/search?location='.$drama['region'])}" target="_blank">{$drama.region}</a></p>
-                                        <p>年代：<a href="{:U('Drama/search?year='.$drama['age'])}" target="_blank">{$drama.age}</a></p>
+                                        <p>地区：<a href="{:U('/search?location='.$drama['region'])}" target="_blank">{$drama.region}</a></p>
+                                        <p>年代：<a href="{:U('/search?year='.$drama['age'])}" target="_blank">{$drama.age}</a></p>
                                     </div>
                                 </div>
                                 <div class="media-body">
@@ -34,14 +43,14 @@
                                     <php>$performers = explode(" ",$drama['performers']);</php>
                                     主演：
                                     <volist name="performers" id="performer">
-                                        <a href="{:U('Drama/performer?performer_name='.$performer)}" target="_blank">{$performer}</a>&nbsp;
+                                        <a href="{:U('/performer/'.$performer)}" target="_blank">{$performer}</a>&nbsp;
                                     </volist>
                                     </p>
                                     <p>
                                     <php>$categorys = explode(" ",$drama['categorys']);</php>
                                     类型：
                                     <volist name="categorys" id="category">
-                                        <a href="{:U('Drama/performer?category='.$category)}" target="_blank">{$category}</a>&nbsp;
+                                        <a href="{:U('/search?category='.$category)}" target="_blank">{$category}</a>&nbsp;
                                     </volist>
                                     </p>
                                     <p id="drama_summary_content">
@@ -53,22 +62,24 @@
                                     </gt>
 
                                     </p>
-                                    <div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a title="分享到QQ空间" href="#" class="bds_qzone" data-cmd="qzone"></a><a title="分享到新浪微博" href="#" class="bds_tsina" data-cmd="tsina"></a><a title="分享到腾讯微博" href="#" class="bds_tqq" data-cmd="tqq"></a><a title="分享到人人网" href="#" class="bds_renren" data-cmd="renren"></a><a title="分享到微信" href="#" class="bds_weixin" data-cmd="weixin"></a><a title="分享到百度新首页" href="#" class="bds_bdhome" data-cmd="bdhome"></a><a title="分享到复制网址" href="#" class="bds_copy" data-cmd="copy"></a><a title="分享到打印" href="#" class="bds_print" data-cmd="print"></a></div>
-                                    <script>window._bd_share_config = {"common": {"bdSnsKey": {}, "bdText": "", "bdMini": "2", "bdMiniList": false, "bdPic": "", "bdStyle": "0", "bdSize": "24"}, "share": {}};
-                                        with (document)
-                                            0[(getElementsByTagName('head')[0] || body).appendChild(createElement('script')).src = 'http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion=' + ~(-new Date() / 36e5)];</script>
+                                    {:C('SHARE_JS_PLUGIN')}
                                 </div>
                             </div>
                         </div>
                         <div class="panel-body">
                             <div class="episode">
+                                <neq name="drama.type" value="2">
                                 <h3>剧集列表</h3>
                                 <php>$plotnum =$drama['plots']+1; </php>
                                 <for start="1" end="$plotnum" step="1" name="index" >
                                     <egt name="drama.latest_plot_index" value="$index">
-                                        <a class="btn btn-default btn-xs" href="{:U('Plot/detail?dramaid='.$drama['id'].'&plotindex='.$index)}" role="button">第{$index}集</a>&nbsp;
+                                        <a class="btn btn-default btn-xs" href="{:U('/plot/'.$drama['id'].'/'.$index)}" role="button">第{$index}集</a>&nbsp;
                                     </egt>
                                 </for>
+                                <else/>
+                                <h3>剧情介绍</h3>
+                                {$drama.latest_plot_content}
+                                </neq>
                             </div> 
                         </div>
                     </div>
@@ -79,7 +90,7 @@
                         <div class="panel-heading"><i class="fa fa-comments-o"></i> 吐槽一下 </div>
                         <div class="panel-body">
                             <!-- 多说评论框 start -->
-                            <div class="ds-thread" data-thread-key="{$drama.id}" data-title="{$drama.name}" data-url="__SITE__{:U('Drama/detail?&dramaid='.$drama['id'])}"></div>
+                            <div class="ds-thread" data-thread-key="{$drama.id}" data-title="{$drama.name}" data-url="{:U('/subject/'.$drama['id'])}"></div>
                             <!-- 多说评论框 end -->
                             <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
                             <script type="text/javascript">
@@ -104,9 +115,9 @@
                             <volist name="guesslikes" id="like">
                                 <div  class="col-md-2 col-xs-6">
                                     <div class="thumbnail" style="border:none;">
-                                        <a href="{:U('Drama/detail?&dramaid='.$like['id'])}" target="_blank"><img src="{$like.logo|get_cover='path'}"/></a>
+                                        <a href="{:U('/subject/'.$like['id'])}" target="_blank"><img src="{$like.logo|get_cover='path'}"/></a>
                                         <div class="caption">
-                                            <p><a href="{:U('Drama/detail?&dramaid='.$like['id'])}" target="_blank" style="font-size:16px;text-align: center;">{$like.name|msubstr=0,6,'utf-8',false}</a></p>
+                                            <p><a href="{:U('/subject/'.$like['id'])}" target="_blank" style="font-size:16px;text-align: center;">{$like.name|msubstr=0,6,'utf-8',false}</a></p>
                                         </div>
                                     </div>
                                 </div>  
