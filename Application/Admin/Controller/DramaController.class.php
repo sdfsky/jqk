@@ -17,7 +17,7 @@ namespace Admin\Controller;
 class DramaController extends AdminController {
 
     public function index() {
-        $name = I('name');
+        $name = I('nickname');
         $map['status'] = array('gt', -1);
         $map['name'] = array('like', '%' . $name . '%');
         $list = $this->lists('Drama', $map);

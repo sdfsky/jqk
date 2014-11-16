@@ -102,7 +102,7 @@ return array(
         'subject/:dramaid'=>'Drama/detail',
         'plot/:dramaid/:plotindex'=>'Plot/detail',
         'performer/:performer_name'=>'Drama/performer',
-        'search'=>'/search',
+        'search'=>'Drama/search',
         'sort/:sorttype'=>'Index/index',
         'article/:id'=>'Article/detail',
 

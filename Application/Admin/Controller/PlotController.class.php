@@ -17,7 +17,7 @@ namespace Admin\Controller;
 class PlotController extends AdminController {
 
     public function index($dramaid = '') {
-        $name = I('name');
+        $name = I('nickname');
         $dramaid = I('get.dramaid');
         $map['status'] = array('gt', -1);
         $map['daram_name'] = array('like', '%' . $name . '%');
