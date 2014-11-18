@@ -43,7 +43,7 @@ class PlotController extends AdminController {
                 $dramaModel->latest_plot_content = I('post.content');
                 $dramaModel->latest_plot_index = I('post.plotindex');
                 $dramaModel->where("id=$dramaid")->save();
-                $this->success('添加剧情成功！', U('index'));
+                $this->success('添加剧情成功！', U('index?dramaid='.$dramaid));
             } else {
                 $this->error($Plot->getError());
             }
