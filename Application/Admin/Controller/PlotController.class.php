@@ -43,7 +43,7 @@ class PlotController extends AdminController {
                 $dramaModel->latest_plot_content = I('post.content');
                 $dramaModel->latest_plot_index = I('post.plotindex');
                 $dramaModel->where("id=$dramaid")->save();
-                $this->success('添加剧情成功！', U('index?dramaid='.$dramaid));
+                $this->success('添加剧情成功！', U('index?dramaid=' . $dramaid));
             } else {
                 $this->error($Plot->getError());
             }
@@ -57,15 +57,15 @@ class PlotController extends AdminController {
     }
 
     public function edit($id = 0) {
+        $info = M('Plot')->find($id);
         if (IS_POST) {
             $Plot = D('Plot');
             if ($Plot->create() && $Plot->save()) {
-                $this->success('编辑剧情成功！', U('index'));
+                $this->success('编辑剧情成功！', U('index?dramaid='.$info['dramaid']));
             } else {
                 $this->error($Plot->getError());
             }
         } else {
-            $info = M('Plot')->find($id);
             $this->meta_title = '编辑剧情';
             $this->assign("info", $info);
             $this->display();
