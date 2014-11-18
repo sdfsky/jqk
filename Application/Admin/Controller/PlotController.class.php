@@ -16,12 +16,12 @@ namespace Admin\Controller;
  */
 class PlotController extends AdminController {
 
-    public function index($dramaid = '') {
+    public function index() {
         $name = I('nickname');
         $dramaid = I('get.dramaid');
         $map['status'] = array('gt', -1);
         $map['daram_name'] = array('like', '%' . $name . '%');
-        $dramaid && $map['daramid'] = $dramaid;
+        $dramaid && $map['dramaid'] = $dramaid;
         $list = $this->lists('Plot', $map);
         int_to_string($list);
         $daram = M('Drama')->where("id='$dramaid'")->find();
