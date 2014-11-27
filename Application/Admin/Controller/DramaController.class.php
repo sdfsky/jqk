@@ -20,7 +20,7 @@ class DramaController extends AdminController {
         $name = I('nickname');
         $map['status'] = array('gt', -1);
         $map['name'] = array('like', '%' . $name . '%');
-        $list = $this->lists('Drama', $map);
+        $list = $this->lists('Drama', $map, "update_time DESC");
         int_to_string($list);
         $this->assign('_list', $list);
         $this->meta_title = '剧情管理';
@@ -134,6 +134,65 @@ class DramaController extends AdminController {
             $this->success('清空回收站成功！');
         } else {
             $this->error('清空回收站失败！');
+        }
+    }
+
+    public function ajaxGatherPlot() {
+        ignore_user_abort();
+        $dramaid = I('get.id');
+        $dramaModel = M('Drama');
+
+        $info = $dramaModel->find($dramaid);
+        if (!$info['tvid']) {
+            $this->error("tvid为空采集不了，请添加tvid");
+        }
+        if ($info) {
+            if ($info['latest_plot_index'] >= $info['plots']) {
+                $this->error($info['name'] . '已更新完结不需要采集!');
+            }
+            require_once THINK_PATH . 'Library/Think/simple_html_dom.php';
+            $plotModel = D('Plot');
+            $last_plot_index = $info['latest_plot_index'];
+            for ($i = ($info['latest_plot_index'] + 1); $i <= $info['plots']; $i++) {
+                $jqurl = "http://tv.2345.com/juqing/" . $info['tvid'] . "-$i.html";
+                $html = file_get_html($jqurl);
+                if (!$html) {
+                    $this->error($info['name'] . "第[$i]集采集失败，请核实该影视信息是否正确!");
+                }
+                $last_plot_index = $i;
+                $plothtml = $html->find("div[class='paragraphCon']", 0)->innertext;
+
+                $plothtml = iconv("GB2312", "UTF-8", strip_tags($plothtml, '<p>'));
+                $plotcontent = str_replace("来源：剧情网", "", $plothtml);
+                if (!trim($plotcontent)) {
+                    $this->error($info['name'] . "第[$i]集采集失败，可能是网站剧情还未更新!");
+                }
+                $data = array();
+                $data['dramaid'] = $dramaid;
+                $data['drama_name'] = $info['name'];
+                $data['content'] = $plotcontent;
+                $data['plotindex'] = $last_plot_index;
+                $data['create_time'] = NOW_TIME;
+                $map['plotindex'] = $last_plot_index;
+                $map['dramaid'] = $dramaid;
+                $plot = $plotModel->where($map)->find();
+                if ($plot) {
+                    $plotModel->where("id=" . $plot['id'])->data($data)->save();
+                } else {
+                    $plotModel->data($data)->add();
+                }
+                //修改最新剧情情况
+                $ddata = array();
+                $ddata['update_time'] = NOW_TIME;
+                $ddata['latest_plot_index'] = $last_plot_index;
+                $ddata['latest_plot_content'] = $plotcontent;
+                $dramaModel->where("id=$dramaid")->save($ddata);
+            }
+            if ($last_plot_index > $info['latest_plot_index']) {
+                $this->success($info['name'] . ' 采集成功!');
+            } else {
+                $this->error($info['name'] . ' 采集失败!');
+            }
         }
     }
 

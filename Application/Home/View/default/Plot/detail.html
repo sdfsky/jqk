@@ -1,11 +1,17 @@
 <extend name="Base/common"/>
 <block name="seo">
     <title>{$drama.name}第{$plotindex}集剧情介绍 - {:C('WEB_SITE_TITLE')}</title>
-    <meta name="keywords" content="{$drama.name}剧情,{$drama.name}第{$plotindex}集剧情介绍,{$drama.name}分集剧情介绍" />
+    <php>
+        $end_title = '';
+        if($plotindex==$drama['plots'] && $drama['type']==1){
+            $endtitle=$drama['name'].'大结局,';
+        }
+    </php>
+    <meta name="keywords" content="{$endtitle}{$drama.name}剧情,{$drama.name}第{$plotindex}集剧情介绍,{$drama.name}分集剧情介绍" />
     <empty name='plot.content'>
-        <meta name="description" content="{$drama.summary|msubstr=0,180}" />
+        <meta name="description" content="{$drama.summary|strip_tags|msubstr=0,180}" />
     <else/>
-        <meta name="description" content="{$plot.content|msubstr=0,180}" />
+        <meta name="description" content="{$plot.content|strip_tags|msubstr=0,180}" />
     </empty>
 </block>
 

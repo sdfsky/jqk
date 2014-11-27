@@ -1,2 +1,14 @@
 /Runtime/
 /Uploads/
+/nbproject/private/
+Addons/GatherPlot/Model/GatherPlotModel.class.php
+
+Addons/GatherPlot/GatherPlotAddon.class.php
+
+Addons/GatherPlot/Controller/GatherPlotController.class.php
+
+Addons/GatherPlot/config.php
+
+nbproject/project.properties
+
+nbproject/project.xml

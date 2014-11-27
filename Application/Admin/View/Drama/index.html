@@ -29,6 +29,7 @@
                     <th class="row-selected row-selected"><input class="check-all" type="checkbox"/></th>
                     <th class="">名称</th>
                     <th class="">集数</th>
+                    <th class="">更新至</th>
                     <th class="">年代</th>
                     <th class="">地区</th>
                     <th class="">创建时间</th>
@@ -45,6 +46,7 @@
                         <td><input class="ids" type="checkbox" name="id[]" value="{$vo.id}" /></td>
                         <td><a href="{:U('Plot/index?&dramaid='.$vo['id'])}" target="_blank">{$vo.name}</a> </td>
                         <td>{$vo.plots} </td>
+                        <td>{$vo.latest_plot_index} </td>
                         <td>{$vo.age} </td>
                         <td>{$vo.region} </td>
                         <td>{$vo.create_time|time_format}</td>
@@ -52,7 +54,7 @@
                         <td>{$vo.views}</td>
                         <td>{$vo.status_text}</td>
                         <td>
-                            <a href="{:U('edit?&id='.$vo['id'])}" >编辑</a>
+                            <a href="{:U('edit?&id='.$vo['id'])}" >编辑</a> | <a href="{:U('Drama/ajaxGatherPlot?id='.$vo['id'])}" target="_blank">采集剧情</a>
                         </td>
                     </tr>
                 </volist>

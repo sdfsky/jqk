@@ -19,7 +19,7 @@ class Page {
     public $parameter; // 分页跳转时要带的参数
     public $totalRows; // 总行数
     public $totalPages; // 分页总页面数
-    public $rollPage = 11; // 分页栏每页显示的页数
+    public $rollPage = 4; // 分页栏每页显示的页数
     public $lastSuffix = true; // 最后一页是否显示总页数
     private $p = 'p'; //分页参数名
     private $url = ''; //当前链接URL
@@ -31,7 +31,7 @@ class Page {
         'next' => '>>',
         'first' => '1...',
         'last' => '...%TOTAL_PAGE%',
-        'theme' => '%FIRST% %UP_PAGE% %LINK_PAGE% %DOWN_PAGE% %END%',
+        'theme' => '%UP_PAGE% %LINK_PAGE% %DOWN_PAGE%',
     );
 
     /**
@@ -126,7 +126,7 @@ class Page {
             if ($page > 0 && $page != $this->nowPage) {
 
                 if ($page <= $this->totalPages) {
-                    $link_page .= '<li><a class="num" href="' . $this->url($page) . '">' . $page . '</a></li>';
+                    $link_page .= '<li><a class="num" href="' . $this->url($page) . '">' . $page . ' <span class="sr-only">(current)</span></a></li>';
                 } else {
                     break;
                 }

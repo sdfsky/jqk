@@ -51,7 +51,7 @@
             <div class="col-md-9">
                 <ul class="nav nav-tabs" role="tableftmod">
                     <eq name="sorttype" value="1">
-                    <li role="presentation" ><a href="__ROOT__">最近更新</a></li>
+                    <li role="presentation" ><a href="__SITE__">最近更新</a></li>
                     <li role="presentation" class="active"><a href="{:U('/sort/1')}">热门排行</a></li>
                     <else />
                     <li role="presentation" class="active"><a href="__ROOT__">最近更新</a></li>
@@ -71,7 +71,7 @@
                             </div>
                             <div class="media-body">
                                 <h4 class="media-heading"><a href="{:U('/search?type='.$drama['type'])}" class="typename">[{$drama.type|get_drama_typename}]</a> <a href="{:U('/subject/'.$drama['id'])}" target="_blank">{$drama.name}</a><notempty name="drama.alias"><span>（别名：{$drama.alias}）</span></notempty></h4>
-                                <div class="extinfo">
+                                <div class="extinfo hidden-xs">
                                     <span>
                                         <php>$performers = explode(" ",$drama['performers']);</php>
                                         主演：

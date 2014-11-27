@@ -77,9 +77,6 @@ class DramaController extends HomeController {
         }
         $pmap['performer_name'] = $performer_name;
         $performer = M('Performer')->where($pmap)->find();
-        if (!$performer) {
-            $this->error("明星信息不存在！");
-        }
         $map['status'] = array('neq', -1);
         $map['_string'] = " `id` IN (SELECT dramaid FROM " . C('DB_PREFIX') . "drama_performer WHERE performer_name='$performer_name')";
         $rowcount = M('Drama')->where($map)->count();
@@ -87,6 +84,7 @@ class DramaController extends HomeController {
         $_page = $page->show();
         $dramalist = M('Drama')->where($map)->order("views DESC,update_time DESC")->limit($page->firstRow, $page->listRows)->select();
         $this->assign("performer", $performer);
+        $this->assign("performer_name", $performer_name);
         $this->assign('dramalist', $dramalist);
         $this->display();
     }

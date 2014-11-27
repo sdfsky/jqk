@@ -80,7 +80,7 @@
                             </div>
                             <div class="media-body">
                                 <h4 class="media-heading"><a href="{:U('/search?type='.$drama['type'])}" class="typename">[{$drama.type|get_drama_typename}]</a> <a href="{:U('/subject/'.$drama['id'])}" target="_blank">{$drama.name}</a><notempty name="drama.alias"><span>（别名：{$drama.alias}）</span></notempty></h4>
-                                <div class="extinfo">
+                                <div class="extinfo hidden-xs">
                                     <span>
                                         <php>$performers = explode(" ",$drama['performers']);</php>
                                         主演：

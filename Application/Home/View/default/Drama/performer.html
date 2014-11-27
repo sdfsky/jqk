@@ -1,8 +1,8 @@
 <extend name="Base/common"/>
 <block name="seo">
     <title>{$performer.performer_name} － 演员介绍 - {:C('WEB_SITE_TITLE')}</title>
-    <meta name="keywords" content="{$performer.performer_name},{$performer.performer_name}的作品, {$performer.performer_name}的影视作品" />
-    <meta name="description" content="{:C('WEB_SITE_DESCRIPTION')}" />
+    <meta name="keywords" content="{$performer_name},{$performer_name}的作品, {$performer_name}的影视作品" />
+    <meta name="description" content="{$performer.introduction|strip_tags|msubstr=0,180}" />
 </block>
 <block name="body">
     <div class="container">
@@ -20,7 +20,7 @@
                         </notempty>
                     </div>
                 </div>
-                <p class="performer_related"><i class="fa fa-caret-square-o-right"></i> {$performer.performer_name}出演的影视作品</p>
+                <p class="performer_related"><i class="fa fa-caret-square-o-right"></i> {$performer_name}出演的影视作品</p>
                 <div class="leftmod">
                     <volist name="dramalist" id="drama">
                         <div class="media clearfix">
@@ -34,7 +34,7 @@
                             </div>
                             <div class="media-body">
                                 <h4 class="media-heading"><a href="{:U('/search?type='.$drama['type'])}" class="typename">[{$drama.type|get_drama_typename}]</a> <a href="{:U('/subject/'.$drama['id'])}" target="_blank">{$drama.name}</a><notempty name="drama.alias"><span>（别名：{$drama.alias}）</span></notempty></h4>
-                                <div class="extinfo">
+                                <div class="extinfo hidden-xs">
                                     <span>
                                         <php>$performers = explode(" ",$drama['performers']);</php>
                                         主演：

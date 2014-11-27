@@ -41,7 +41,6 @@ class PlotController extends AdminController {
                 $dramaModel->update_time = NOW_TIME;
                 $dramaModel->latest_plot_index = I('post.plotindex');
                 $dramaModel->latest_plot_content = I('post.content');
-                $dramaModel->latest_plot_index = I('post.plotindex');
                 $dramaModel->where("id=$dramaid")->save();
                 $this->success('添加剧情成功！', U('index?dramaid=' . $dramaid));
             } else {
@@ -61,7 +60,7 @@ class PlotController extends AdminController {
         if (IS_POST) {
             $Plot = D('Plot');
             if ($Plot->create() && $Plot->save()) {
-                $this->success('编辑剧情成功！', U('index?dramaid='.$info['dramaid']));
+                $this->success('编辑剧情成功！', U('index?dramaid=' . $info['dramaid']));
             } else {
                 $this->error($Plot->getError());
             }
@@ -76,7 +75,7 @@ class PlotController extends AdminController {
         $name = I('name');
         $map['status'] = array('eq', -1);
         $map['name'] = array('like', '%' . $name . '%');
-        $list = $this->lists(M('Plot'), $map, 'update_time desc');
+        $list = $this->lists(M('Plot'), $map, 'create_time desc');
         $this->assign('_list', $list);
         $this->meta_title = '回收站';
         $this->display();
@@ -105,11 +104,13 @@ class PlotController extends AdminController {
     }
 
     public function clear() {
-        $res = D('Plot')->remove();
+        $ids = I('post.id');
+        $map['id'] = array('in', $ids);
+        $res = D('Plot')->where($map)->delete();
         if ($res !== false) {
-            $this->success('清空回收站成功！');
+            $this->success('剧情删除成功！');
         } else {
-            $this->error('清空回收站失败！');
+            $this->error('剧情删除失败！');
         }
     }
 
