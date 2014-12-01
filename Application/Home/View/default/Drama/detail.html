@@ -3,7 +3,7 @@
 <block name="seo">
     <title>{$drama.name}剧情介绍 - {:C('WEB_SITE_TITLE')}</title>
     <meta name="keywords" content="{$drama.name},{$drama.name}剧情介绍,{$drama.name}分集剧情介绍" />
-    <meta name="description" content="{$drama.summary|msubstr=0,180}" />
+    <meta name="description" content="{$drama.summary|msubstr=0,180|trim}" />
 </block>
 
 <block name="body">
@@ -30,7 +30,7 @@
                                 </div>
                                 <div class="media-body">
                                     <h4 class="media-heading">
-                                        {$drama.name}<span><notempty name="drama.alias"><span>（别名：{$drama.alias}）</span></notempty></span>
+                                        {$drama.name}<span><notempty name="drama.alias"><span class="alias">（别名：{$drama.alias}）</span></notempty></span>
                                         <php>if($drama['latest_plot_index'] && ($drama['latest_plot_index']>=$drama['plots'])){</php>
                                         <button type="button" class="btn btn-success btn-xs disabled"><i class="fa fa-check"></i> 已完结,共{$drama.plots}集</button>
                                         <php>}else if($drama['latest_plot_index'] && ($drama['latest_plot_index']<$drama['plots'])){</php>
