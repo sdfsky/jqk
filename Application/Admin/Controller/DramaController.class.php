@@ -19,7 +19,7 @@ class DramaController extends AdminController {
     public function index() {
         $name = I('nickname');
         $map['status'] = array('gt', -1);
-        $map['name'] = array('like', '%' . $name . '%');
+        $map['name'] = array('like', $name . '%');
         $list = $this->lists('Drama', $map, "update_time DESC");
         int_to_string($list);
         $this->assign('_list', $list);
