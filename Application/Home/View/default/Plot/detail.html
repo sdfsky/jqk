@@ -4,13 +4,13 @@
     <php>
         $end_title = '';
         if($plotindex==$drama['plots'] && $drama['type']==1){
-            $endtitle=$drama['name'].'大结局,';
+        $endtitle=$drama['name'].'大结局,';
         }
     </php>
     <meta name="keywords" content="{$endtitle}{$drama.name}剧情,{$drama.name}第{$plotindex}集剧情介绍,{$drama.name}分集剧情介绍" />
     <empty name='plot.content'>
         <meta name="description" content="{$drama.summary|strip_tags|msubstr=0,180|trim}" />
-    <else/>
+        <else/>
         <meta name="description" content="{$plot.content|strip_tags|msubstr=0,180|trim}" />
     </empty>
 </block>
@@ -88,11 +88,19 @@
                             </div> 
                             <h5>{$drama.name}第{$plotindex}集</h5>
                             <div class="content">
+
+                                <script type="text/javascript">
+                                    /* 创建于 2014-12-04*/
+                                    var cpro_id = "u1844206";
+                                </script>
+                                <script src="http://cpro.baidustatic.com/cpro/ui/cnw.js" type="text/javascript"></script>
+
                                 <empty name="plot.content">
                                     抱歉！剧情还未更新，小编会尽快更新，请按 Ctrl+D 键收藏我们以便下次查看 :)
-                                <else/>
-                                {$plot.content}
+                                    <else/>
+                                    {$plot.content}
                                 </empty>
+
                             </div>
                             <div class="control">
                                 <php>
@@ -113,16 +121,16 @@
                             <!-- 多说评论框 end -->
                             <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
                             <script type="text/javascript">
-                                var duoshuoQuery = {short_name: "juqingku"};
-                                (function() {
-                                    var ds = document.createElement('script');
-                                    ds.type = 'text/javascript';
-                                    ds.async = true;
-                                    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
-                                    ds.charset = 'UTF-8';
-                                    (document.getElementsByTagName('head')[0]
-                                            || document.getElementsByTagName('body')[0]).appendChild(ds);
-                                })();
+                                    var duoshuoQuery = {short_name: "juqingku"};
+                                    (function () {
+                                        var ds = document.createElement('script');
+                                        ds.type = 'text/javascript';
+                                        ds.async = true;
+                                        ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+                                        ds.charset = 'UTF-8';
+                                        (document.getElementsByTagName('head')[0]
+                                                || document.getElementsByTagName('body')[0]).appendChild(ds);
+                                    })();
                             </script>
                             <!-- 多说公共JS代码 end -->
 
@@ -153,8 +161,8 @@
         </div>
     </div>
     <script type="text/javascript">
-        $(function() {
-            $("#drama_summary").click(function() {
+        $(function () {
+            $("#drama_summary").click(function () {
                 $("#drama_summary_content").load("{:U('Drama/ajaxGetSummary?dramaid='.$plot['dramaid'])}");
             });
         })
