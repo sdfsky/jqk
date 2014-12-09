@@ -15,14 +15,23 @@ namespace Admin\Controller;
  * @author huajie <sky_php@qq.com>
  */
 class DramaController extends AdminController {
-
+    protected $typetable = array(
+        '1'=>'plots>latest_plot_index OR latest_plot_index=0',
+        '2'=>'plots=latest_plot_index AND latest_plot_index>0',
+    );
     public function index() {
         $name = I('nickname');
+        $type = I('type');
+
+        if (isset($this->typetable[$type])) {
+            $map['_string'] = $this->typetable[$type];
+        }
         $map['status'] = array('gt', -1);
         $map['name'] = array('like', $name . '%');
         $list = $this->lists('Drama', $map, "update_time DESC");
         int_to_string($list);
         $this->assign('_list', $list);
+        $this->assign('type', $type);
         $this->meta_title = '剧情管理';
         $this->display();
     }

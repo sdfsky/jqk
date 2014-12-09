@@ -16,6 +16,13 @@
         <!-- 高级搜索 -->
         <div class="search-form fr cf">
             <div class="sleft">
+                <select name="type">
+                    <option value="0">全部</option>
+                    <option value="1" <eq name="type" value="1">selected</eq>>待更新</option>
+                    <option value="2" <eq name="type" value="2">selected</eq>>已完结</option>
+                </select>
+            </div>
+            <div class="sleft">
                 <input type="text" name="nickname" class="search-input" value="{:I('nickname')}" placeholder="请输入用户昵称或者ID">
                 <a class="sch-btn" href="javascript:;" id="search" url="{:U('index')}"><i class="btn-search"></i></a>
             </div>
@@ -76,7 +83,7 @@
         //搜索功能
         $("#search").click(function() {
             var url = $(this).attr('url');
-            var query = $('.search-form').find('input').serialize();
+            var query = $('.search-form').find('input,select').serialize();
             query = query.replace(/(&|^)(\w*?\d*?\-*?_*?)*?=?((?=&)|(?=$))/g, '');
             query = query.replace(/^&/g, '');
             if (url.indexOf('?') > 0) {
@@ -94,6 +101,6 @@
             }
         });
 //导航高亮
-        highlight_subnav('{:U('User / index')}');
+        highlight_subnav('{:U('Drama / index')}');
     </script>
 </block>
